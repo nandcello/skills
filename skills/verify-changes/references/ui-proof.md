@@ -7,4 +7,3 @@
 - Auth/onboarding changes require real auth and the actual transition. A mocked sign-up component or an already-onboarded session cannot prove first-time signup. Use an isolated new test identity when the journey requires it and the environment permits it.
 - Inspect existing Playwright assertions, not just titles. If the changed flow or assertion is missing, add or extend a durable Playwright journey in the repository and run it. Reuse existing helpers; create the smallest maintainable Playwright setup if none exists. A temporary screenshot script is not lasting regression coverage. Preserve project-specific test catalogs and walkthroughs.
 - Both interactive exploration and repeatable coverage are required. A host-imposed browser restriction must be reported if it prevents either; do not silently substitute a mock or source inspection.
-
