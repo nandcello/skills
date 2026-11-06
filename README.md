@@ -1,25 +1,25 @@
-# Verification skills
+# Skills
 
-[![skills.sh](https://skills.sh/b/nandcello/verification-skills)](https://skills.sh/nandcello/verification-skills)
+[![skills.sh](https://skills.sh/b/nandcello/skills)](https://skills.sh/nandcello/skills)
 
-Explicitly invoked skills for preparing an app's browser testing and verifying changes through real end-to-end flows. Works with the [skills CLI](https://github.com/vercel-labs/skills) and its standard `skills/<name>/SKILL.md` layout. No custom installer or npm package is required.
+A growing collection of explicitly invoked agent skills. The initial pair prepares browser testing, maps app journeys, and verifies changes end to end. Works with the [skills CLI](https://github.com/vercel-labs/skills) and its standard `skills/<name>/SKILL.md` layout. No custom installer or npm package is required.
 
 ## Install anywhere
 
 Requires a Node version supported by the skills CLI (currently Node 22.20+).
 
 ```sh
-npx skills add nandcello/verification-skills -g -a codex claude-code
+npx skills add nandcello/skills -g -a codex claude-code
 ```
 
 Choose both skills, or select explicitly:
 
 ```sh
-npx skills add nandcello/verification-skills -g -a codex claude-code \
+npx skills add nandcello/skills -g -a codex claude-code \
   --skill setup-verification verify-changes -y
 ```
 
-Omit `-g` for a project-local install. Run `npx skills update -g` for updates. You can also clone this repository, pull updates, and install from its local path with `npx skills add ./verification-skills`.
+Omit `-g` for a project-local install. Run `npx skills update -g` for updates. You can also clone this repository, pull updates, and install from its local path with `npx skills add ./skills`.
 
 ## Use
 
@@ -66,7 +66,7 @@ No claims of verification based solely on mocks, unit tests, source inspection, 
 The repository is public and follows the [documented skill format](https://github.com/vercel-labs/skills/blob/main/docs/creating-skills.md). The [directory](https://skills.sh) uses install telemetry to surface skills; publishing a repository is not a guarantee of immediate indexing or ranking.
 
 ```sh
-npx skills add nandcello/verification-skills --list
+npx skills add nandcello/skills --list
 npx skills find verification --owner nandcello
 ```
 
@@ -83,4 +83,4 @@ python3 -m unittest discover -s tests -v
 npx skills add . --list
 ```
 
-Keep the shared flow contract identical in both skill folders so each skill remains independently installable. Do not commit private project histories, test credentials, browser sessions, or application evidence.
+Author shared flow rules in `shared/flow-contract.md`, then run `python3 scripts/sync_shared.py` to refresh the bundled copies. Each skill remains independently installable. Read [authoring guidance](docs/authoring.md) before changing a skill; it records the applied guidance and upstream sources. Do not commit private project histories, test credentials, browser sessions, or application evidence.

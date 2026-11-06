@@ -1,0 +1,10 @@
+# UI proof
+
+- Drive the actual app with `agent-browser`, or the host's required shared browser tool. In T3, follow its preview-tool rules; in a cloud agent, use its supported interactive browser. Inspect the real UI, then act through visible controls with stable accessible locators.
+- Exercise the changed journey from its actual entry point, including navigation, forms, loading/error feedback, and confirmation. API/fixture setup may establish prerequisites, but must not perform the UI action being claimed as tested.
+- Assert the visible result and saved state, then reload or reopen to prove persistence. Use another authenticated role/session when access, collaboration, or cross-user updates matter. Inspect console, failed requests, and server diagnostics.
+- For responsive/interaction changes, exercise affected desktop and phone sizes, keyboard/focus, overflow, and touch interactions where relevant. A phone screenshot proves rendering, not tapping, scrolling, or Safari behavior.
+- Auth/onboarding changes require real auth and the actual transition. A mocked sign-up component or an already-onboarded session cannot prove first-time signup. Use an isolated new test identity when the journey requires it and the environment permits it.
+- Inspect existing Playwright assertions, not just titles. If the changed flow or assertion is missing, add or extend a durable Playwright journey in the repository and run it. Reuse existing helpers; create the smallest maintainable Playwright setup if none exists. A temporary screenshot script is not lasting regression coverage. Preserve project-specific test catalogs and walkthroughs.
+- Both interactive exploration and repeatable coverage are required. A host-imposed browser restriction must be reported if it prevents either; do not silently substitute a mock or source inspection.
+

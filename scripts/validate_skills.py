@@ -2,10 +2,11 @@
 from pathlib import Path
 import re
 import yaml
+from sync_shared import sync
 
 root = Path(__file__).resolve().parents[1]
-folders = sorted((root / 'skills').iterdir())
-assert {p.name for p in folders} == {'setup-verification', 'verify-changes'}
+folders = sorted(p.parent for p in (root / 'skills').glob('*/SKILL.md'))
+assert folders, 'No skills found'
 for folder in folders:
     text = (folder / 'SKILL.md').read_text()
     assert text.startswith('---\n')
@@ -19,10 +20,12 @@ for folder in folders:
     settings = yaml.safe_load((folder / 'agents/openai.yaml').read_text())
     assert settings['policy']['allow_implicit_invocation'] is False
     assert '$' + folder.name in settings['interface']['default_prompt']
-    for relative in re.findall(r'\]\(([^)]+)\)', body):
-        if '://' not in relative:
-            assert (folder / relative).is_file(), f'Broken reference: {relative}'
+    for document in folder.rglob('*.md'):
+        for relative in re.findall(r'\]\(([^)]+)\)', document.read_text()):
+            if '://' not in relative and not relative.startswith('#'):
+                target = (document.parent / relative.split('#', 1)[0]).resolve()
+                assert target.is_relative_to(folder.resolve()), f'Reference escapes skill package: {relative}'
+                assert target.is_file(), f'Broken reference in {document}: {relative}'
     print(f'Valid skill: {folder.name}')
-assert ((folders[0] / 'references/flow-contract.md').read_bytes() ==
-        (folders[1] / 'references/flow-contract.md').read_bytes())
+sync(check=True)
 print('Explicit-only policies and shared flow contract validated')
