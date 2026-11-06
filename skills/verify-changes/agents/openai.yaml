@@ -1,0 +1,6 @@
+interface:
+  display_name: "Verify Changes"
+  short_description: "Verify real flows and add missing E2E coverage"
+  default_prompt: "Use $verify-changes to verify the current changes end to end and add missing regression tests."
+policy:
+  allow_implicit_invocation: false

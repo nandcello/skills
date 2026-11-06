@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "revision": "EXAMPLE ONLY: replace with the mapped application revision",
+  "inventory": "Fictional task app: signed-in task creation and empty-title rejection only. Replace with the full app inventory and explicit omissions.",
+  "nodes": [
+    {"id": "tasks.list", "label": "Member sees task list", "evidence": "Example requirement: member can create tasks"},
+    {"id": "tasks.form", "label": "New task form", "evidence": "Example requirement: create form"},
+    {"id": "tasks.saved", "label": "Task saved and visible after reload", "evidence": "Example requirement: durable task"},
+    {"id": "tasks.invalid", "label": "Validation message, no saved task", "evidence": "Example requirement: nonempty title"}
+  ],
+  "edges": [
+    {"id": "tasks.open", "from": "tasks.list", "to": "tasks.form", "action": "Select New task", "role": "member", "outcome": "Form appears", "evidence": "Example only", "kind": "normal", "observed": false},
+    {"id": "tasks.save", "from": "tasks.form", "to": "tasks.saved", "action": "Enter title and save", "role": "member", "outcome": "One task persists and renders after reload", "evidence": "Example only", "kind": "normal", "observed": false},
+    {"id": "tasks.reject-empty", "from": "tasks.form", "to": "tasks.invalid", "action": "Submit empty title", "role": "member", "outcome": "Validation error and no new record", "evidence": "Example only", "kind": "boundary", "observed": false}
+  ],
+  "journeys": [
+    {"id": "tasks.create", "label": "Authenticated member creates a task from the list", "edges": ["tasks.open", "tasks.save"]},
+    {"id": "tasks.invalid-title", "label": "Authenticated member submits an empty title", "edges": ["tasks.open", "tasks.reject-empty"]}
+  ],
+  "tests": [
+    {"id": "e2e/tasks.spec.ts::member creates a task", "journey": "tasks.create", "edges": ["tasks.open", "tasks.save"], "coverage": "whole-path"},
+    {"id": "e2e/tasks.spec.ts::rejects an empty title", "journey": "tasks.invalid-title", "edges": ["tasks.reject-empty"], "coverage": "boundary"}
+  ]
+}

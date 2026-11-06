@@ -1,0 +1,6 @@
+interface:
+  display_name: "Set Up Verification"
+  short_description: "Prepare browsers and map app journeys to tests"
+  default_prompt: "Use $setup-verification to prepare browser testing and establish this app's flow map."
+policy:
+  allow_implicit_invocation: false
