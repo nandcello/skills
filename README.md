@@ -74,6 +74,11 @@ The first command discovers directly from this repository even before search ind
 
 ## Development
 
+The first behavioral [eval](evals/save-persistence/README.md) checks whether
+`verify-changes` catches a successful-looking save that loses data. It includes
+a disposable app, a blind agent prompt, and a replay runner that checks the
+agent's regression tests against broken and repaired versions.
+
 Python 3 and PyYAML are used for repository validation; the bundled app-flow validator uses only the Python standard library.
 
 ```sh

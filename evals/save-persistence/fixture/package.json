@@ -1,0 +1,7 @@
+{
+  "name": "verification-eval-app",
+  "private": true,
+  "type": "module",
+  "scripts": {"start": "node server.mjs", "test:e2e": "playwright test"},
+  "devDependencies": {"@playwright/test": "1.65.0"}
+}

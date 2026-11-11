@@ -1,0 +1,100 @@
+{
+  "revision": "fixture initial change",
+  "inventory": "Entire local app: /, GET /api/profile, POST /api/profile. No auth or external services. Health endpoint is infrastructure.",
+  "nodes": [
+    {
+      "id": "entry",
+      "label": "App entry",
+      "evidence": "README.md acceptance criteria"
+    },
+    {
+      "id": "profile",
+      "label": "Profile loaded",
+      "evidence": "README.md acceptance criteria"
+    },
+    {
+      "id": "edited",
+      "label": "Name edited",
+      "evidence": "README.md acceptance criteria"
+    },
+    {
+      "id": "saved",
+      "label": "Save confirmed",
+      "evidence": "README.md acceptance criteria"
+    },
+    {
+      "id": "reloaded",
+      "label": "Saved name after reload",
+      "evidence": "README.md acceptance criteria"
+    }
+  ],
+  "edges": [
+    {
+      "id": "open",
+      "from": "entry",
+      "to": "profile",
+      "action": "Open Profile",
+      "role": "user",
+      "outcome": "Current name is displayed",
+      "evidence": "README.md acceptance criteria",
+      "kind": "normal",
+      "observed": false
+    },
+    {
+      "id": "edit",
+      "from": "profile",
+      "to": "edited",
+      "action": "Edit display name",
+      "role": "user",
+      "outcome": "New name is in the input",
+      "evidence": "README.md acceptance criteria",
+      "kind": "normal",
+      "observed": false
+    },
+    {
+      "id": "save",
+      "from": "edited",
+      "to": "saved",
+      "action": "Save",
+      "role": "user",
+      "outcome": "Confirmation appears and GET returns the new name",
+      "evidence": "README.md acceptance criteria",
+      "kind": "normal",
+      "observed": false
+    },
+    {
+      "id": "reload",
+      "from": "saved",
+      "to": "reloaded",
+      "action": "Reload",
+      "role": "user",
+      "outcome": "New name remains visible",
+      "evidence": "README.md acceptance criteria",
+      "kind": "normal",
+      "observed": false
+    }
+  ],
+  "journeys": [
+    {
+      "id": "profile-save",
+      "label": "Save display name; local app, no auth required",
+      "edges": [
+        "open",
+        "edit",
+        "save",
+        "reload"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "tests/profile.spec.mjs::profile page loads",
+      "journey": "profile-save",
+      "edges": [
+        "open"
+      ],
+      "coverage": "step"
+    }
+  ],
+  "version": 1
+}

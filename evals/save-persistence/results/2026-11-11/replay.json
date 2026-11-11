@@ -1,0 +1,128 @@
+{
+  "product_unchanged": true,
+  "test_hashes": {
+    "tests/profile-save.spec.mjs": "a273e65af46472a85c5094f636dc9dae8217bdc45e0ebf6ff0cedd83928aa4f2",
+    "tests/profile.spec.mjs": "4c4d13e11406352f8588c42712ea2965bfd6353eea03f08ae50514ede31e615e"
+  },
+  "variants": {
+    "broken": {
+      "exit_code": 1,
+      "stats": {
+        "startTime": "2026-11-11T01:26:25.081Z",
+        "duration": 8530.619999999999,
+        "expected": 4,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "profile-save.spec.mjs",
+          "title": "display name survives saving, API read and reload",
+          "status": "unexpected",
+          "results": [
+            "failed"
+          ]
+        },
+        {
+          "file": "profile-save.spec.mjs",
+          "title": "empty display name is blocked without mutation",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        },
+        {
+          "file": "profile-save.spec.mjs",
+          "title": "whitespace name reports save failure without mutation",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        },
+        {
+          "file": "profile-save.spec.mjs",
+          "title": "API rejects invalid name types without mutation",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        },
+        {
+          "file": "profile.spec.mjs",
+          "title": "profile page loads",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        }
+      ]
+    },
+    "repaired": {
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-11T01:26:35.323Z",
+        "duration": 2615.179,
+        "expected": 5,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "profile-save.spec.mjs",
+          "title": "display name survives saving, API read and reload",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        },
+        {
+          "file": "profile-save.spec.mjs",
+          "title": "empty display name is blocked without mutation",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        },
+        {
+          "file": "profile-save.spec.mjs",
+          "title": "whitespace name reports save failure without mutation",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        },
+        {
+          "file": "profile-save.spec.mjs",
+          "title": "API rejects invalid name types without mutation",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        },
+        {
+          "file": "profile.spec.mjs",
+          "title": "profile page loads",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        }
+      ]
+    }
+  },
+  "mechanical_pass": true,
+  "manual_review": "passed: browser action log, real UI/API/reload assertions, mapping gate and cleanup inspected",
+  "skill_revision": "e1eb6cfad28c5aaf047086a1e840f5b0a9df7dfb",
+  "skill_sha256": "03ea8a1e789c09fd3424f8f549ce8cbc977c0aea24f8b601256e5ba1b07c3c88",
+  "trial_count": 1,
+  "model": "gpt-6-astra",
+  "effort": "high",
+  "host": "Codex harness",
+  "environment": {
+    "node": "24.21.0",
+    "playwright": "1.65.0",
+    "os": "Linux"
+  }
+}
