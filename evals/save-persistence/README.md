@@ -6,6 +6,26 @@ The skill must discover the failed saved outcome rather than accept the toast.
 This evaluates verification only; fixing the product is out of scope.
 
 [First executed trial: 2026-11-11](results/2026-11-11/README.md).
+[Opus 5.5 trial: 2026-11-17](results/2026-11-17-opus/README.md).
+
+## View results
+
+Open [results.html](results.html) locally. It is self-contained and needs no
+server or external resources. The chart counts required rubric checks, not
+statistical pass rates. Expand each model for evidence and broken/repaired
+test counts; expand the comparison limits before drawing conclusions.
+
+Regenerate after adding a reviewed trial:
+
+```sh
+python3 evals/save-persistence/visualize.py
+```
+
+Each result directory supplies `replay.json` from independent replay (sanitize
+local paths) and `assessment.json` from manual rubric review. Do not derive
+browser proof, mapping or cleanup scores from the candidate's verdict alone.
+The generator rejects missing assessments and inconsistent pass verdicts.
+Keep evidence summaries, model/harness/effort and trial dates with each result.
 
 ## Run
 

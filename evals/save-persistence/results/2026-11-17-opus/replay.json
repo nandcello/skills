@@ -1,0 +1,97 @@
+{
+  "product_unchanged": true,
+  "test_hashes": {
+    "tests/profile-save.spec.mjs": "fdd38eb4272aeb6a55afcb404a9fff9db17376f48092af2b0059045fa23a1e7d",
+    "tests/profile.spec.mjs": "4c4d13e11406352f8588c42712ea2965bfd6353eea03f08ae50514ede31e615e"
+  },
+  "variants": {
+    "broken": {
+      "exit_code": 1,
+      "stats": {
+        "startTime": "2026-11-17T06:18:27.024Z",
+        "duration": 3387.8510000000006,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "profile-save.spec.mjs",
+          "title": "saving a display name shows confirmation and persists after reload",
+          "status": "unexpected",
+          "results": [
+            "failed"
+          ]
+        },
+        {
+          "file": "profile-save.spec.mjs",
+          "title": "saving a blank display name is rejected and leaves the saved name unchanged",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        },
+        {
+          "file": "profile.spec.mjs",
+          "title": "profile page loads",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        }
+      ]
+    },
+    "repaired": {
+      "exit_code": 0,
+      "stats": {
+        "startTime": "2026-11-17T06:18:32.144Z",
+        "duration": 2205.7340000000004,
+        "expected": 3,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "cases": [
+        {
+          "file": "profile-save.spec.mjs",
+          "title": "saving a display name shows confirmation and persists after reload",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        },
+        {
+          "file": "profile-save.spec.mjs",
+          "title": "saving a blank display name is rejected and leaves the saved name unchanged",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        },
+        {
+          "file": "profile.spec.mjs",
+          "title": "profile page loads",
+          "status": "expected",
+          "results": [
+            "passed"
+          ]
+        }
+      ]
+    }
+  },
+  "mechanical_pass": true,
+  "manual_review": "passed: interactive actions, assertions, flow mapping and cleanup independently reviewed",
+  "skill_revision": "e1eb6cfad28c5aaf047086a1e840f5b0a9df7dfb",
+  "skill_sha256": "03ea8a1e789c09fd3424f8f549ce8cbc977c0aea24f8b601256e5ba1b07c3c88",
+  "trial_count": 1,
+  "model": "claude-opus-5-5",
+  "effort": "high",
+  "host": "Claude Agent harness",
+  "environment": {
+    "node": "24.21.0",
+    "playwright": "1.65.0",
+    "agent-browser": "0.38.2",
+    "os": "Linux"
+  }
+}

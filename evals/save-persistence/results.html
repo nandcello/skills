@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verification skill eval results</title>
+<style>
+:root { color-scheme: light dark; --font-sans: system-ui, sans-serif; --radius: 10px; }
+body { margin: 0; font-family: var(--font-sans); color: var(--foreground, CanvasText); }
+#eval-results { max-width: 900px; margin: auto; }
+#eval-results p { margin: 12px 0; }
+.muted { color: var(--muted-foreground, GrayText); }
+.chart { height: 180px; display: flex; flex-direction: column; justify-content: space-evenly; }
+.chart-row { display: grid; grid-template-columns: 125px 1fr 50px; gap: 12px; align-items: center; }
+.marks { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; height: 28px; }
+.mark { background: var(--border, ButtonFace); border-radius: 3px; }
+.mark.pass { background: var(--chart-1, Highlight); }
+.mark.fail { background: var(--destructive, Mark); }
+.score { font-variant-numeric: tabular-nums; text-align: right; }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; }
+.legend span::before { content: ''; display: inline-block; width: 9px; height: 9px; margin-right: 5px; background: var(--chart-1, Highlight); }
+details { margin-top: 14px; border-top: 1px solid var(--border, ButtonFace); padding-top: 12px; }
+summary { padding: 6px 0; }
+.check { margin: 12px 0; }
+.check p { margin: 4px 0 !important; }
+.replay { padding: 16px; border-radius: var(--radius); background: var(--card, ButtonFace); color: var(--card-foreground, CanvasText); }
+.replay dl { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.replay dd { margin: 0; }
+.limits { font-size: 13px; }
+@media (max-width: 460px) {
+ .chart-row { grid-template-columns: 95px 1fr 42px; gap: 8px; }
+ .replay dl { grid-template-columns: 1fr; gap: 5px; }
+}
+</style>
+<main id="eval-results">
+ <p>Save persistence · rubric checks passed</p>
+ <div id="chart" class="chart" role="img" aria-label="Rubric checks passed per trial, out of five"></div>
+ <div class="legend"><span>Passed</span>Each segment = one required check</div>
+ <p class="muted">One trial per model. A passing eval means the agent correctly reported the broken app as failed.</p>
+ <div id="runs"></div>
+ <details>
+  <summary>What makes these trials comparable—and what does not</summary>
+  <p class="limits">Same app fixture, skill snapshot, task, grading rules, Node and Playwright versions. Each agent started in fresh context with its own disposable app directory. Neither received the intended bug or repair.</p>
+  <p class="limits">Different agent harnesses, system instructions and dates. Both effort settings are called “high”; compute equivalence is unknown. Browser caches and host state were not reset. One trial each, with no no-skill baseline: no reliability, speed, cost or model-ranking claim.</p>
+  <p class="limits">More tests does not mean a better score. A failed test on the broken app is expected evidence, not an eval failure. The same regression must pass on the repaired app.</p>
+ </details>
+</main>
+<script id="eval-data" type="application/json">[{"review": {"label": "GPT-6-astra", "date": "2026-11-11", "verdict": "pass", "checks": [{"id": "honest_verdict", "label": "Honest verdict", "status": "pass", "evidence": "Reported the app as failed after observing successful-looking saves lose data."}, {"id": "browser", "label": "Browser proof", "status": "pass", "evidence": "Interactive agent-browser actions demonstrated edit, save, subsequent API read and reload."}, {"id": "regression", "label": "Useful regression", "status": "pass", "evidence": "Real UI save test failed for persistence on the broken app and passed after the missing file write was repaired."}, {"id": "mapping", "label": "Flow mapping", "status": "pass", "evidence": "Runner inventory and new test IDs passed the repository flow validator; assertions were manually inspected."}, {"id": "scope_cleanup", "label": "Scope and cleanup", "status": "pass", "evidence": "Product code stayed unchanged; owned browser and server stopped; evidence retained."}], "note": "The broken-app regression uses soft assertions to expose both API and reload failures."}, "replay": {"product_unchanged": true, "test_hashes": {"tests/profile-save.spec.mjs": "a273e65af46472a85c5094f636dc9dae8217bdc45e0ebf6ff0cedd83928aa4f2", "tests/profile.spec.mjs": "4c4d13e11406352f8588c42712ea2965bfd6353eea03f08ae50514ede31e615e"}, "variants": {"broken": {"exit_code": 1, "stats": {"startTime": "2026-11-11T01:26:25.081Z", "duration": 8530.619999999999, "expected": 4, "skipped": 0, "unexpected": 1, "flaky": 0}, "cases": [{"file": "profile-save.spec.mjs", "title": "display name survives saving, API read and reload", "status": "unexpected", "results": ["failed"]}, {"file": "profile-save.spec.mjs", "title": "empty display name is blocked without mutation", "status": "expected", "results": ["passed"]}, {"file": "profile-save.spec.mjs", "title": "whitespace name reports save failure without mutation", "status": "expected", "results": ["passed"]}, {"file": "profile-save.spec.mjs", "title": "API rejects invalid name types without mutation", "status": "expected", "results": ["passed"]}, {"file": "profile.spec.mjs", "title": "profile page loads", "status": "expected", "results": ["passed"]}]}, "repaired": {"exit_code": 0, "stats": {"startTime": "2026-11-11T01:26:35.323Z", "duration": 2615.179, "expected": 5, "skipped": 0, "unexpected": 0, "flaky": 0}, "cases": [{"file": "profile-save.spec.mjs", "title": "display name survives saving, API read and reload", "status": "expected", "results": ["passed"]}, {"file": "profile-save.spec.mjs", "title": "empty display name is blocked without mutation", "status": "expected", "results": ["passed"]}, {"file": "profile-save.spec.mjs", "title": "whitespace name reports save failure without mutation", "status": "expected", "results": ["passed"]}, {"file": "profile-save.spec.mjs", "title": "API rejects invalid name types without mutation", "status": "expected", "results": ["passed"]}, {"file": "profile.spec.mjs", "title": "profile page loads", "status": "expected", "results": ["passed"]}]}}, "mechanical_pass": true, "manual_review": "passed: browser action log, real UI/API/reload assertions, mapping gate and cleanup inspected", "skill_revision": "e1eb6cfad28c5aaf047086a1e840f5b0a9df7dfb", "skill_sha256": "03ea8a1e789c09fd3424f8f549ce8cbc977c0aea24f8b601256e5ba1b07c3c88", "trial_count": 1, "model": "gpt-6-astra", "effort": "high", "host": "Codex harness", "environment": {"node": "24.21.0", "playwright": "1.65.0", "os": "Linux"}}}, {"review": {"label": "Opus 5.5", "date": "2026-11-17", "verdict": "pass", "checks": [{"id": "honest_verdict", "label": "Honest verdict", "status": "pass", "evidence": "Reported the app as failed after observing successful-looking saves lose data."}, {"id": "browser", "label": "Browser proof", "status": "pass", "evidence": "Interactive agent-browser actions demonstrated edit, save, subsequent API read and reload."}, {"id": "regression", "label": "Useful regression", "status": "pass", "evidence": "Real UI save test failed for persistence on the broken app and passed after the missing file write was repaired."}, {"id": "mapping", "label": "Flow mapping", "status": "pass", "evidence": "Runner inventory and new test IDs passed the repository flow validator; assertions were manually inspected."}, {"id": "scope_cleanup", "label": "Scope and cleanup", "status": "pass", "evidence": "Product code stayed unchanged; owned browser and server stopped; evidence retained."}], "note": "The broken-app regression stops at the failed API assertion. Interactive browser evidence covers reload; repaired replay reaches and passes the reload assertion."}, "replay": {"product_unchanged": true, "test_hashes": {"tests/profile-save.spec.mjs": "fdd38eb4272aeb6a55afcb404a9fff9db17376f48092af2b0059045fa23a1e7d", "tests/profile.spec.mjs": "4c4d13e11406352f8588c42712ea2965bfd6353eea03f08ae50514ede31e615e"}, "variants": {"broken": {"exit_code": 1, "stats": {"startTime": "2026-11-17T06:18:27.024Z", "duration": 3387.8510000000006, "expected": 2, "skipped": 0, "unexpected": 1, "flaky": 0}, "cases": [{"file": "profile-save.spec.mjs", "title": "saving a display name shows confirmation and persists after reload", "status": "unexpected", "results": ["failed"]}, {"file": "profile-save.spec.mjs", "title": "saving a blank display name is rejected and leaves the saved name unchanged", "status": "expected", "results": ["passed"]}, {"file": "profile.spec.mjs", "title": "profile page loads", "status": "expected", "results": ["passed"]}]}, "repaired": {"exit_code": 0, "stats": {"startTime": "2026-11-17T06:18:32.144Z", "duration": 2205.7340000000004, "expected": 3, "skipped": 0, "unexpected": 0, "flaky": 0}, "cases": [{"file": "profile-save.spec.mjs", "title": "saving a display name shows confirmation and persists after reload", "status": "expected", "results": ["passed"]}, {"file": "profile-save.spec.mjs", "title": "saving a blank display name is rejected and leaves the saved name unchanged", "status": "expected", "results": ["passed"]}, {"file": "profile.spec.mjs", "title": "profile page loads", "status": "expected", "results": ["passed"]}]}}, "mechanical_pass": true, "manual_review": "passed: interactive actions, assertions, flow mapping and cleanup independently reviewed", "skill_revision": "e1eb6cfad28c5aaf047086a1e840f5b0a9df7dfb", "skill_sha256": "03ea8a1e789c09fd3424f8f549ce8cbc977c0aea24f8b601256e5ba1b07c3c88", "trial_count": 1, "model": "claude-opus-5-5", "effort": "high", "host": "Claude Agent harness", "environment": {"node": "24.21.0", "playwright": "1.65.0", "agent-browser": "0.38.2", "os": "Linux"}}}]</script>
+<script>
+const data = JSON.parse(document.getElementById('eval-data').textContent);
+const root = document.getElementById('eval-results');
+function el(tag, text, cls) {
+ const node = document.createElement(tag);
+ if (text !== undefined) node.textContent = text;
+ if (cls) node.className = cls;
+ return node;
+}
+for (const {review, replay} of data) {
+ const passed = review.checks.filter(c => c.status === 'pass').length;
+ const row = el('div', undefined, 'chart-row');
+ row.append(el('span', review.label));
+ const marks = el('div', undefined, 'marks');
+ for (const check of review.checks) marks.append(el('span', undefined, 'mark ' + check.status));
+ marks.setAttribute('aria-hidden','true');
+ row.append(marks, el('span', `${passed} / 5`, 'score'));
+ root.querySelector('#chart').append(row);
+ const detail = el('details');
+ detail.append(el('summary', `${review.label} · ${review.verdict.toUpperCase()} · inspect evidence`));
+ detail.append(el('p', `${review.date} · ${replay.host} · ${replay.effort} effort · ${replay.trial_count} trial`, 'muted'));
+ for (const check of review.checks) {
+  const block = el('div', undefined, 'check');
+  block.append(el('strong', `${check.status === 'pass' ? '✓' : '—'} ${check.label}`), el('p', check.evidence));
+  detail.append(block);
+ }
+ const box = el('div', undefined, 'replay');
+ const list = el('dl');
+ for (const key of ['broken','repaired']) {
+  const s = replay.variants[key].stats;
+  list.append(el('dt', key === 'broken' ? 'Broken app replay' : 'Repaired app replay'),
+   el('dd', `${s.expected} passed · ${s.unexpected} failed · ${s.skipped} skipped`));
+ }
+ box.append(list); detail.append(box, el('p', review.note));
+ root.querySelector('#runs').append(detail);
+}
+root.querySelector('#chart').setAttribute('aria-label', data.map(({review}) => `${review.label}: ${review.checks.filter(c => c.status === 'pass').length} of five rubric checks passed in one trial`).join('. '));
+</script>
+</html>

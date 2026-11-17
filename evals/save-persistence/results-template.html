@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verification skill eval results</title>
+<style>
+:root { color-scheme: light dark; --font-sans: system-ui, sans-serif; --radius: 10px; }
+body { margin: 0; font-family: var(--font-sans); color: var(--foreground, CanvasText); }
+#eval-results { max-width: 900px; margin: auto; }
+#eval-results p { margin: 12px 0; }
+.muted { color: var(--muted-foreground, GrayText); }
+.chart { height: 180px; display: flex; flex-direction: column; justify-content: space-evenly; }
+.chart-row { display: grid; grid-template-columns: 125px 1fr 50px; gap: 12px; align-items: center; }
+.marks { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; height: 28px; }
+.mark { background: var(--border, ButtonFace); border-radius: 3px; }
+.mark.pass { background: var(--chart-1, Highlight); }
+.mark.fail { background: var(--destructive, Mark); }
+.score { font-variant-numeric: tabular-nums; text-align: right; }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 13px; }
+.legend span::before { content: ''; display: inline-block; width: 9px; height: 9px; margin-right: 5px; background: var(--chart-1, Highlight); }
+details { margin-top: 14px; border-top: 1px solid var(--border, ButtonFace); padding-top: 12px; }
+summary { padding: 6px 0; }
+.check { margin: 12px 0; }
+.check p { margin: 4px 0 !important; }
+.replay { padding: 16px; border-radius: var(--radius); background: var(--card, ButtonFace); color: var(--card-foreground, CanvasText); }
+.replay dl { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.replay dd { margin: 0; }
+.limits { font-size: 13px; }
+@media (max-width: 460px) {
+ .chart-row { grid-template-columns: 95px 1fr 42px; gap: 8px; }
+ .replay dl { grid-template-columns: 1fr; gap: 5px; }
+}
+</style>
+<main id="eval-results">
+ <p>Save persistence · rubric checks passed</p>
+ <div id="chart" class="chart" role="img" aria-label="Rubric checks passed per trial, out of five"></div>
+ <div class="legend"><span>Passed</span>Each segment = one required check</div>
+ <p class="muted">One trial per model. A passing eval means the agent correctly reported the broken app as failed.</p>
+ <div id="runs"></div>
+ <details>
+  <summary>What makes these trials comparable—and what does not</summary>
+  <p class="limits">Same app fixture, skill snapshot, task, grading rules, Node and Playwright versions. Each agent started in fresh context with its own disposable app directory. Neither received the intended bug or repair.</p>
+  <p class="limits">Different agent harnesses, system instructions and dates. Both effort settings are called “high”; compute equivalence is unknown. Browser caches and host state were not reset. One trial each, with no no-skill baseline: no reliability, speed, cost or model-ranking claim.</p>
+  <p class="limits">More tests does not mean a better score. A failed test on the broken app is expected evidence, not an eval failure. The same regression must pass on the repaired app.</p>
+ </details>
+</main>
+<script id="eval-data" type="application/json">RESULT_DATA</script>
+<script>
+const data = JSON.parse(document.getElementById('eval-data').textContent);
+const root = document.getElementById('eval-results');
+function el(tag, text, cls) {
+ const node = document.createElement(tag);
+ if (text !== undefined) node.textContent = text;
+ if (cls) node.className = cls;
+ return node;
+}
+for (const {review, replay} of data) {
+ const passed = review.checks.filter(c => c.status === 'pass').length;
+ const row = el('div', undefined, 'chart-row');
+ row.append(el('span', review.label));
+ const marks = el('div', undefined, 'marks');
+ for (const check of review.checks) marks.append(el('span', undefined, 'mark ' + check.status));
+ marks.setAttribute('aria-hidden','true');
+ row.append(marks, el('span', `${passed} / 5`, 'score'));
+ root.querySelector('#chart').append(row);
+ const detail = el('details');
+ detail.append(el('summary', `${review.label} · ${review.verdict.toUpperCase()} · inspect evidence`));
+ detail.append(el('p', `${review.date} · ${replay.host} · ${replay.effort} effort · ${replay.trial_count} trial`, 'muted'));
+ for (const check of review.checks) {
+  const block = el('div', undefined, 'check');
+  block.append(el('strong', `${check.status === 'pass' ? '✓' : '—'} ${check.label}`), el('p', check.evidence));
+  detail.append(block);
+ }
+ const box = el('div', undefined, 'replay');
+ const list = el('dl');
+ for (const key of ['broken','repaired']) {
+  const s = replay.variants[key].stats;
+  list.append(el('dt', key === 'broken' ? 'Broken app replay' : 'Repaired app replay'),
+   el('dd', `${s.expected} passed · ${s.unexpected} failed · ${s.skipped} skipped`));
+ }
+ box.append(list); detail.append(box, el('p', review.note));
+ root.querySelector('#runs').append(detail);
+}
+root.querySelector('#chart').setAttribute('aria-label', data.map(({review}) => `${review.label}: ${review.checks.filter(c => c.status === 'pass').length} of five rubric checks passed in one trial`).join('. '));
+</script>
+</html>
