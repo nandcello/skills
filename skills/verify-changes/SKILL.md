@@ -23,6 +23,8 @@ If the map is absent, create a provisional mapping for the changed scope and dis
 
 Reuse the project's harness, package manager, auth protocol and fixtures. Confirm the frontend's actual backend before writing test data. Preserve persistent development data, shared accounts, saved reviews and unrelated sessions. Different ports alone do not isolate caches, auth files or databases.
 
+When a journey needs starting data, inspect project scripts, fixture helpers and database CLI help. Use an existing tool to seed the minimum prerequisites in the isolated test database. Check the tool and app target the same database, read back the seeded state, and track the records or disposable database for cleanup even on failure. Exercise the behavior under test through its real entry point. For example, seed an unpaid expense, record its repayment through the UI, then read the ledger.
+
 Run the project's read-only health check, or equivalent checks for intended code/build, owned processes/ports, schema/functions and authenticated readiness. Recheck after surprising behavior; restore a known UI state when a healthy process contains a wedged session. Keep secrets and raw auth state out of reports. Track owned processes, tabs, temporary identities and data for cleanup.
 
 **Complete when:** the real target is ready and ownership/isolation is established, or a precise runtime blocker is recorded. Finish checks that do not depend on blocked access.
@@ -50,7 +52,7 @@ Retain failed attempts and diagnose them rather than weakening assertions, widen
 
 ## 5. Clean up and report
 
-Retain commands/exit codes, test selection/counts, build identity, action traces, relevant screenshots, saved-state assertions and diagnostics in private artifacts. Redact before sharing; browser traces may contain sessions. Stop only owned services/tabs and remove run-created disposable identities/data. Preserve durable accounts and saved reviews. Verify owned ports are released and evidence remains after cleanup, including failed attempts.
+Keep a compact private summary per invocation with its reason (including why a rerun was needed), revision, test selection, outcomes, saved-state checks and cleanup. Keep one trace per failed test, and expire old diagnostics according to the project’s retention policy. Select a single attachment location when an HTML reporter copies traces. Redact before sharing; browser traces may contain sessions. Stop only owned services/tabs and remove run-created disposable identities/data. Preserve durable accounts and saved reviews. Verify owned ports are released and evidence remains after cleanup, including failed attempts.
 
 Return **verified**, **failed**, or **blocked/partial**, with scope/revision/environment/roles, observed UI/API and saved outcomes, tests added/updated, focused/full results, defects and unrun gaps, evidence links and cleanup status.
 

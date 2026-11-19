@@ -33,6 +33,8 @@ Read [app mapping](references/app-map.md) for inventory, graph creation, test as
 
 Write `docs/verification/SETUP.md` or extend the existing testing guide with concrete commands and these operational details:
 
+- Document the project’s fixture CLI or helper, how to select the test database, verify seeded records and clean them up.
+- Configure compact run summaries, failure-only traces in one location, and automatic expiry of old diagnostics. Document the retention window.
 - Start the isolated app, including required migrations/fixtures, and identify usable auth/backend readiness.
 - Run a read-only health check for the intended revision, process/port ownership and auth. Recheck after a failed or surprising interaction; recover a wedged UI before continuing even if the process is healthy.
 - Drive a mapped feature with real selectors or public commands, then observe persisted/downstream state.
