@@ -12,7 +12,7 @@ Requires a Node version supported by the skills CLI (currently Node 22.20+).
 npx skills add nandcello/skills -g -a codex claude-code
 ```
 
-Choose both skills, or select explicitly:
+Choose skills interactively, or select explicitly:
 
 ```sh
 npx skills add nandcello/skills -g -a codex claude-code \
@@ -37,10 +37,11 @@ In Claude Code:
 /verify-changes Verify the current branch against main.
 ```
 
-Both skills carry `disable-model-invocation: true` for Claude Code and `policy.allow_implicit_invocation: false` in `agents/openai.yaml` for Codex. They do not automatically invoke each other. Other hosts must enforce an equivalent explicit-only policy; installation support alone does not guarantee invocation policy support.
+All skills carry `disable-model-invocation: true` for Claude Code and `policy.allow_implicit_invocation: false` in `agents/openai.yaml` for Codex. They do not automatically invoke each other. Other hosts must enforce an equivalent explicit-only policy; installation support alone does not guarantee invocation policy support.
 
 | Skill | Result |
 | --- | --- |
+| [verify-tracker](skills/verify-tracker/SKILL.md) | Runs selected Tracker journeys against an isolated Convex backend and checks saved ledger state. |
 | [setup-verification](skills/setup-verification/SKILL.md) | Installs missing Playwright/agent-browser and browser dependencies, checks real readiness, and establishes a durable app-flow map with test associations. |
 | [verify-changes](skills/verify-changes/SKILL.md) | Exercises actual UI/API flows, verifies saved outcomes, adds missing durable coverage tied to the map, and reports evidence, failures and cleanup. |
 

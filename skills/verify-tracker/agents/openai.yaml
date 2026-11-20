@@ -1,0 +1,6 @@
+interface:
+  display_name: "Verify Tracker"
+  short_description: "Check Tracker journeys using its isolated test stack"
+  default_prompt: "Use $verify-tracker to verify the selected Tracker journey and its saved ledger state."
+policy:
+  allow_implicit_invocation: false
